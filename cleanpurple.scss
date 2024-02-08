@@ -1,0 +1,219 @@
+/**
+ * White theme for reveal.js. This is the opposite of the 'black' theme.
+ *
+ * By Hakim El Hattab, http://hakim.se
+ */
+
+@use 'sass:list';
+
+// Default mixins and settings -----------------
+@import "template/mixins";
+@import "template/settings";
+// ---------------------------------------------
+
+
+// Include theme-specific fonts
+@import url(./fonts/source-sans-pro/source-sans-pro.css);
+
+
+// Override theme settings (see ../template/settings.scss)
+$backgroundColor: #fff;
+
+$mainColor: #222;
+$headingColor: #222;
+// colors stolen from my website
+$hue: 263;
+$sat: 50%;
+$dark-color: hsl($hue, $sat, 15%);
+$mid-color: hsl($hue, $sat, 50%);
+// $low-color: hsl($hue, $sat, 85%)
+$low-color: hsl($hue, $sat, 80%);
+$light-color: hsl($hue, $sat, 90%);
+// $scheme-main-bis: hsl(47, 80, 98%)
+// $scheme-main-background: hsl(47, 50, 94%)
+$scheme-main-bis: hsl($hue, $sat, 98%);
+$scheme-main-background: hsl($hue, $sat , 96%);
+
+// $mainFontSize: 42px;
+// for 4/3 aspect ratio
+$aspect-width: 4;
+$aspect-height: 3;
+$font_size_percent_width: 2.5; 
+$font_size_percent_height: calc($font_size_percent_width * $aspect-width / $aspect-height); 
+$mainFontSize: min($font_size_percent_width * 1vw, $font_size_percent_height * 1vh);
+$mainFont: 'Georgia', "Lora", "Times new roman", serif;
+$headingFont: 'Georgia', "Lora", "Times new roman", serif;
+$headingTextShadow: none;
+$headingLetterSpacing: normal;
+$headingTextTransform: uppercase;
+$headingFontWeight: 600;
+$linkColor: #2a76dd;
+$linkColorHover: lighten( $linkColor, 15% );
+$selectionBackgroundColor: lighten( $linkColor, 25% );
+
+$heading1Size: 2.0em;
+$heading2Size: 1.6em;
+$heading3Size: 1.3em;
+$heading4Size: 1.0em;
+$footer-font-size: 0.6em;
+
+$slidepadding: 2em;
+$footerheight: 2 * $footer-font-size;
+$title-underline-color: $mid-color;
+
+
+$overlayElementBgColor: 0, 0, 0;
+$overlayElementFgColor: 240, 240, 240;
+
+$authorsize: 1.3em;
+$authors-spacing: 5px;
+
+$use-frame: true;
+
+// Change text colors against dark slide backgrounds
+@include dark-bg-text-color(#fff);
+
+
+// Theme template ------------------------------
+@import "template/theme";
+// ---------------------------------------------
+
+.reveal {
+	@if $use-frame {
+		background-color: $light-color;
+	}
+}
+
+.reveal .slides {
+	text-align: left;
+	aspect-ratio: list.slash($aspect-width, $aspect-height);
+	max-width: 100%;
+	max-height: 100%;
+	width: auto;
+	height: auto;
+	background-color: $backgroundColor;
+
+	// .slide {
+	// 	@if $use-frame {
+	// 		border-width: 5em 2em 3em 2em;
+	// 		border-color: $light-color;
+	// 		border-style: solid;
+	// 	}
+	// }
+
+	h1, h2{
+		&:after {
+			content: ' ';
+			display: block;
+			border-bottom: 10px solid $title-underline-color;
+			width: 80%;
+			margin: .2em 1em 1em 0;
+		}
+	}
+	h2 {
+		&:after {
+			border-bottom: 5px solid $title-underline-color;
+			width: 80%;
+			margin: .2em 1em 1em 0;
+		}
+
+	}
+	h3 {
+		margin-top: 1em;
+	}
+
+	figure{
+		margin: 1em 2em;
+		text-align: center;
+		img {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	code {
+		font-size: 1.4em
+	}
+
+
+	#title-slide, .slide {
+		padding: $slidepadding;
+		margin-bottom: $footerheight;
+		box-sizing: border-box;
+		height: 100%;
+		width: 100%;
+
+	}
+
+	#title-slide {
+		h1.title:after {
+			margin-top: .5em;
+			border-bottom: 20px solid $title-underline-color;
+		}
+
+		.date {
+			margin-top: auto;
+			position: absolute;
+			bottom: $slidepadding;
+			left: $slidepadding;
+		}
+	}
+
+
+	p.author{
+		margin-bottom: $authors-spacing;
+		font-size: $authorsize;
+	}
+
+	p.author + p.author {
+		margin-top: $authors-spacing;
+	}
+
+	.institute {
+		font-style: italic;
+	}
+
+	footer.slides-footer{
+		height: $footerheight;
+		position:absolute;
+		bottom:0;
+		left:0;
+		right:0;
+
+		background-color: $dark-color;
+		color: white;
+
+		padding-right:1em;
+		padding-left:1em;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-content: center;
+
+		font-size: $footer-font-size;
+
+		white-space: nowrap;
+
+		* {
+			height: 100%;
+			margin: 0;
+		}
+
+		a { color: white; }
+
+		ul.footer-authors{
+			display: flex;
+			flex-direction: row;
+			list-style-type: none;
+
+			:is(li + li):before {
+				content: ", "
+			}
+		}
+
+		
+	}
+
+}
+
+// .institute 
