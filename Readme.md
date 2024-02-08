@@ -15,6 +15,10 @@ Here is an exemple of a presentation I built with this theme: **TODO**
 
 TODO image
 
+## Customizing
+
+This is called "cleanpurple", but you can totally change the main color (or the font size, or most things), just edit the variables in the css.
+
 ## Building
 
 To build, we need the `revealjs` source, included in the `revealjs/` submodule. Check that you have cloned the submodule (either by cloning directly with) `--recurse-submodules`  or run 
