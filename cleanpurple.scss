@@ -126,8 +126,41 @@ $use-frame: true;
 		margin: 1em 2em;
 		text-align: center;
 		img {
+			margin-top: 0;
 			margin-left: auto;
 			margin-right: auto;
+		}
+	}
+
+	ul {
+		display: block; // to allow figures to wrap around them
+	}
+
+	.figurewrap {
+		float: right;
+		margin: 1em 2em;
+		figure {
+			margin: 0;
+		}
+	}
+
+	table{
+		// border: 1px solid black;
+
+		thead {
+			background-color: $light-color;
+		}
+
+		tr,th,td{
+			border: none;
+		}
+
+		tbody tr:nth-child(odd) {
+		  background-color: $scheme-main-background;
+		}
+
+		tbody tr:nth-child(even) {
+		  background-color: $scheme-main-bis;
 		}
 	}
 

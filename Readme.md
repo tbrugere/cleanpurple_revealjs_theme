@@ -5,7 +5,7 @@
 
 I built this theme to go with my [template](link:todo) to make revealjs slides with pandoc
 
-Just include the theme `css`  in your `html`. This theme is meant to be used **without** standard layout.
+Just include the theme `css`  in your `html`. This theme is meant to be used **without** revealjs layout adjustment (ie with ``).
 
 ## Demo & Feature
 
