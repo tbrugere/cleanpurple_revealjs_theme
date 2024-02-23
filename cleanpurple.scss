@@ -1,86 +1,121 @@
 /**
- * White theme for reveal.js. This is the opposite of the 'black' theme.
- *
- * By Hakim El Hattab, http://hakim.se
+ * cleanpurple.scss 
+ * Clean theme with purple tones for reveal.js, by Tristan Brugère
  */
 
 @use 'sass:list';
 
 // Default mixins and settings -----------------
+// sadly these need to be @import'ed and not @use'd
 @import "template/mixins";
 @import "template/settings";
 // ---------------------------------------------
 
 
 // Include theme-specific fonts
-@import url(./fonts/source-sans-pro/source-sans-pro.css);
+// 
+@import url(resources/fonts/source-sans-pro/source-sans-pro.css);
 
 
-// Override theme settings (see ../template/settings.scss)
-$backgroundColor: #fff;
+// This theme settings (these are in snake case)
+// The reason I rename all of the config is so that they
+// Can be overwritten by @use'ing this theme
+// (if I set them to !default without renaming them, they get overwritten by reveal source)
 
-$mainColor: #222;
-$headingColor: #222;
-// colors stolen from my website
-$hue: 263;
-$sat: 50%;
-$dark-color: hsl($hue, $sat, 15%);
-$mid-color: hsl($hue, $sat, 50%);
-// $low-color: hsl($hue, $sat, 85%)
-$low-color: hsl($hue, $sat, 80%);
-$light-color: hsl($hue, $sat, 90%);
-// $scheme-main-bis: hsl(47, 80, 98%)
-// $scheme-main-background: hsl(47, 50, 94%)
-$scheme-main-bis: hsl($hue, $sat, 98%);
-$scheme-main-background: hsl($hue, $sat , 96%);
+// 1. COLORS 
+// 1.1 MAIN COLORS // stolen from my website - change if needed
+$hue: 263 !default;
+$sat: 50% !default;
+$dark-color: hsl($hue, $sat, 15%) !default;
+$mid-color: hsl($hue, $sat, 50%) !default;
+$low-color: hsl($hue, $sat, 80%) !default;
+$light-color: hsl($hue, $sat, 90%) !default;
+$scheme-main-bis: hsl($hue, $sat, 98%) !default;
+$scheme-main-background: hsl($hue, $sat , 96%) !default;
 
-// $mainFontSize: 42px;
-// for 4/3 aspect ratio
-$aspect-width: 4;
-$aspect-height: 3;
-$font_size_percent_width: 2.5; 
+// 1.2 SPECIFIC COLORS
+$font-color: #222 !default;
+$heading-color: $font-color !default;
+$background-color: #fff !default;
+$margins-color: $light-color !default;
+$link-color: #2a76dd !default;
+
+$footer-color: $dark-color !default;
+$footer-font-color: white !default;
+$title-underline-color: $mid-color !default;
+$overlay-element-bg-color: 0, 0, 0 !default;
+$overlay-element-fg-color: 240, 240, 240 !default;
+
+
+// 2. SIZES
+// 2.1 MAIN SIZES
+// for 4/3 aspect ratio (just change aspect width)
+$use-frame: true !default;
+$aspect-width: 4 !default;
+$aspect-height: 3 !default;
+$font_size_percent_width: 2.5 !default; 
 $font_size_percent_height: calc($font_size_percent_width * $aspect-width / $aspect-height); 
-$mainFontSize: min($font_size_percent_width * 1vw, $font_size_percent_height * 1vh);
-$mainFont: 'Georgia', "Lora", "Times new roman", serif;
-$headingFont: 'Georgia', "Lora", "Times new roman", serif;
-$headingTextShadow: none;
-$headingLetterSpacing: normal;
-$headingTextTransform: uppercase;
-$headingFontWeight: 600;
-$linkColor: #2a76dd;
-$linkColorHover: lighten( $linkColor, 15% );
-$selectionBackgroundColor: lighten( $linkColor, 25% );
+$main-font-size: min($font_size_percent_width * 1vw, $font_size_percent_height * 1vh);
 
-$heading1Size: 2.0em;
-$heading2Size: 1.6em;
-$heading3Size: 1.3em;
-$heading4Size: 1.0em;
-$footer-font-size: 0.6em;
+// 2.2 FONT SIZES
+$h1-size: 2.0em !default;
+$h2-size: 1.6em !default;
+$h3-size: 1.3em !default;
+$h4-size: 1.0em !default;
+$footer-font-size: 0.6em !default;
+$authorsize: 1.3em !default;
 
-$slidepadding: 2em;
-$footerheight: 2 * $footer-font-size;
-$title-underline-color: $mid-color;
+// 2.3 MISC SIZES
+$slidepadding: 2em !default;
+$footerheight: 2 * $footer-font-size !default;
+$headerheight: 1.2em !default;
+$authors-spacing: 5px !default;
+$subfigure-margin: .5rem !default;
+
+// 3. FONTS
+$main-font: 'Georgia', "Lora", "Times new roman", serif !default;
+$heading-font: $main-font !default; 
+$code-font: monospace !default; 
 
 
-$overlayElementBgColor: 0, 0, 0;
-$overlayElementFgColor: 240, 240, 240;
-
-$authorsize: 1.3em;
-$authors-spacing: 5px;
-
-$use-frame: true;
 
 // Change text colors against dark slide backgrounds
 @include dark-bg-text-color(#fff);
 
 
+// Override theme settings (see ../template/settings.scss)
+$mainColor: $font-color;
+$headingColor: $heading-color;
+$backgroundColor: $background-color;
+
+$mainFontSize: $main-font-size;
+$mainFont: $main-font;
+$headingFont: $heading-font;
+$headingTextShadow: none !default;
+$headingLetterSpacing: normal !default;
+$headingTextTransform: uppercase !default;
+$headingFontWeight: 600 !default;
+$linkColor: $link-color;
+$linkColorHover: lighten( $linkColor, 15% ) !default;
+$selectionBackgroundColor: lighten( $linkColor, 25% ) !default;
+
+$heading1Size: $h1-size;
+$heading2Size: $h2-size;
+$heading3Size: $h3-size;
+$heading4Size: $h4-size;
+
+$overlayElementBgColor: $overlay-element-bg-color; 
+$overlayElementFgColor: $overlay-element-fg-color;
+
 // Theme template ------------------------------
 @import "template/theme";
 // ---------------------------------------------
 
+html { font-size: $mainFontSize; } // set the rem
+
 .reveal {
 	@if $use-frame {
-		background-color: $light-color;
+		background-color: $margins-color;
 	}
 }
 
@@ -91,15 +126,11 @@ $use-frame: true;
 	max-height: 100%;
 	width: auto;
 	height: auto;
-	background-color: $backgroundColor;
+	background-color: $background-color;
 
-	// .slide {
-	// 	@if $use-frame {
-	// 		border-width: 5em 2em 3em 2em;
-	// 		border-color: $light-color;
-	// 		border-style: solid;
-	// 	}
-	// }
+	p {
+		margin:0; // overwrite the margin:20px that doesn't scale...
+	}
 
 	h1, h2{
 		&:after {
@@ -107,28 +138,64 @@ $use-frame: true;
 			display: block;
 			border-bottom: 10px solid $title-underline-color;
 			width: 80%;
-			margin: .2em 1em 1em 0;
+			margin: .2rem 1rem 1rem 0;
 		}
 	}
 	h2 {
+		margin:0; // same: overwrite the margin:20px that doesn't scale...
 		&:after {
 			border-bottom: 5px solid $title-underline-color;
 			width: 80%;
-			margin: .2em 1em 1em 0;
+			margin: .2rem 1rem 1rem 0;
 		}
 
 	}
 	h3 {
-		margin-top: 1em;
+		margin-top: 1rem;
 	}
 
-	figure{
-		margin: 1em 2em;
+	figure,.figure{
+		margin: 1rem 2rem;
 		text-align: center;
 		img {
 			margin-top: 0;
 			margin-left: auto;
 			margin-right: auto;
+			margin-bottom: .1rem
+		}
+
+		.superfigure{
+			margin: -$subfigure-margin; // fix inner margins not collapsing with outer ones
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			flex-wrap:nowrap;
+			// flex-basis: 1 1 0; // same width for all elements
+			width: attr(width); //pull width from the attribute
+			justify-content: space-around;
+			row-gap: 1em;
+			&.multiline{
+				flex-wrap:wrap;
+			}
+
+			&>:is(figure, .figure){
+				margin: $subfigure-margin;
+				// border: 1px solid gray;
+				width: auto;
+				flex-basis: min-content;
+				max-width: max-content;
+				flex-grow: 1;
+
+				figcaption {
+					font-size: .9rem; // make subfigure captions smaller
+				}
+			}
+
+			.break, hr{
+				flex-basis: 100%;
+				height: 0;
+				border: none;
+			}
 		}
 	}
 
@@ -138,11 +205,12 @@ $use-frame: true;
 
 	.figurewrap {
 		float: right;
-		margin: 1em 2em;
+		margin: 1rem 2rem;
 		figure {
 			margin: 0;
 		}
 	}
+
 
 	table{
 		// border: 1px solid black;
@@ -164,12 +232,30 @@ $use-frame: true;
 		}
 	}
 
-	code {
-		font-size: 1.4em
+	pre {
+		font-size: 1.2rem
+	}
+
+	.footnotes-end-of-section {
+		position: absolute;
+		bottom: $footerheight;
+		left:0;
+		right:0;
+		font-size: 0.5rem;
+		padding: 0em .5em .5em .5em;
+		ol>li>p {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+		ol>li>p+p{
+			margin-top: .1em
+		}
 	}
 
 
-	#title-slide, .slide {
+	section#title-slide, section>section{
+		display: block; // default. Should be set by reveal.css, but 
+		// weirdly, the default is none if non-activated, which messes up with transitions
 		padding: $slidepadding;
 		margin-bottom: $footerheight;
 		box-sizing: border-box;
@@ -178,9 +264,44 @@ $use-frame: true;
 
 	}
 
+	// for this to work, you need to set display: "" in reveal config
+	section.centered-slide{
+		&.present {display:flex;}
+		flex-direction:column;
+		justify-content: center;
+
+		&>*:not(h2){
+			margin-top:auto;
+			margin-bottom:auto;
+		}
+
+		&>:is(ul,ol){
+			
+		}
+
+	}
+
+	section.big-slide{
+		&>:not(h2){
+			font-size: 1.5em;
+		}
+	}
+
+	section>section.title-slide {
+		display: flex;
+		flex-direction: column;
+		h1{
+			margin-top: auto;
+			margin-bottom: auto;
+			border-bottom-width: 40px;
+			font-size: $h1-size;
+			width: 100%
+		}
+	}
+
 	#title-slide {
 		h1.title:after {
-			margin-top: .5em;
+			margin-top: .5rem;
 			border-bottom: 20px solid $title-underline-color;
 		}
 
@@ -191,6 +312,7 @@ $use-frame: true;
 			left: $slidepadding;
 		}
 	}
+
 
 
 	p.author{
@@ -206,6 +328,54 @@ $use-frame: true;
 		font-style: italic;
 	}
 
+	#slides-header{
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		padding-left: 1em;
+		padding-right: 1em;
+		padding-top: 0.5em;
+
+		height: $headerheight;
+		&>*{
+			height: 100%;
+			box-sizing: border-box;
+		}
+	}
+
+	#header_institute_logos{
+		display:flex;
+		justify-content: end;
+		// width:fit-content;
+		height: 100%;
+		list-style-type: none;
+		gap: 0.5em;
+	}
+
+	#title_institute_logos{
+		display:flex;
+		justify-content: start;
+		flex-wrap:wrap;
+
+		list-style-type: none;
+
+		height: 3em;
+		width: auto;
+		margin-top: 1.5em;
+		margin-right: 0;
+		margin-left: 0;
+
+		gap: 1em;
+
+			
+	}
+
+	:is(li,img).institute-logo{
+		height: 100%;
+		margin: 0;
+	}
+
 	footer.slides-footer{
 		height: $footerheight;
 		position:absolute;
@@ -213,8 +383,8 @@ $use-frame: true;
 		left:0;
 		right:0;
 
-		background-color: $dark-color;
-		color: white;
+		background-color: $footer-color;
+		color: $footer-font-color;
 
 		padding-right:1em;
 		padding-left:1em;
