@@ -6,6 +6,7 @@
 I built this theme to go with my [template](https://github.com/tbrugere/pandoc-revealjs-template) to make revealjs slides with pandoc
 
 Just include the theme `css`  in your `html`. This theme is meant to be used **without** revealjs layout adjustment (ie with `disableLayout: True`).
+For the default parameters, the css can be downloaded from github releases, if you want customization, you will have to build it yourself (see [#Building])
 
 This should automatically adjust the font size to the viewport (with **pure css**, yes it's possible) so that the slides always display  with the same aspect ratio (if you only use `em`, `rem` or `%` as units). The default is 4/3 but it can be customized through scss variables. 
 
