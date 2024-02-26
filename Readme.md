@@ -7,7 +7,17 @@ I built this theme to go with my [template](https://github.com/tbrugere/pandoc-r
 
 Just include the theme `css`  in your `html`. This theme is meant to be used **without** revealjs layout adjustment (ie with `disableLayout: True`).
 
-This should automatically adjust the font size to the viewport (with **pure css**, yes it's possible) so that the slides always display  with the same aspect ratio (if you only use `em`, `rem° or `%` as units). The default is 4/3 but it can be customized through scss variables. 
+This should automatically adjust the font size to the viewport (with **pure css**, yes it's possible) so that the slides always display  with the same aspect ratio (if you only use `em`, `rem` or `%` as units). The default is 4/3 but it can be customized through scss variables. 
+
+Here is the  set of features I recommend you set to get all the capabilities of this theme
+
+```javascript
+Reveal.initialize({
+    display: "", 
+    disableLayout: True, 
+})
+```
+
 
 ## Demo & Features
 
