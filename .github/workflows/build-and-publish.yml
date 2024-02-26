@@ -36,6 +36,6 @@ jobs:
       - uses: "ncipollo/release-action@v1"
         with:
           name: cleanpurple.css
-          artifacts: dist/cleanpurple.css
+          artifacts: cleanpurple.css
           allowUpdates: true
 
