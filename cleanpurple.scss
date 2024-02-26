@@ -227,7 +227,10 @@ html { font-size: $mainFontSize; } // set the rem
 	ul {
 		display: block; // to allow figures to wrap around them
 
-		.list-in-blocks > &, &.list-in-blocks{
+
+	}
+
+	.list-in-blocks > ul, ul.list-in-blocks{
 			display: flex;
 			flex-direction: row;
 			flex-wrap:wrap;
@@ -271,17 +274,12 @@ html { font-size: $mainFontSize; } // set the rem
 				}
 				
 			}
-
-	}
-
 	}
 
 	/********************************* FOOTNOTES **************************/
-
 	pre {
 		font-size: 1.2rem
 	}
-
 
 	.footnotes-end-of-section {
 		position: absolute;
@@ -299,7 +297,7 @@ html { font-size: $mainFontSize; } // set the rem
 		}
 	}
 
-
+	/********************************* GENERAL SECTIONS *****************/
 	section#title-slide, section>section{
 		display: block; // default. Should be set by reveal.css, but 
 		// weirdly, the default is none if non-activated, which messes up with transitions
@@ -347,7 +345,7 @@ html { font-size: $mainFontSize; } // set the rem
 		}
 	}
 
-/********************************* title-slide *************************/
+	/********************************* title-slide *************************/
 
 	#title-slide {
 		h1.title:after {
@@ -465,8 +463,6 @@ html { font-size: $mainFontSize; } // set the rem
 
 		
 	}
-
-
 }
 
 // for animations
@@ -484,7 +480,7 @@ html { font-size: $mainFontSize; } // set the rem
 		@for $i from 1 through $n-replace-colors{
 			&>*:nth-child(#{$n-replace-colors} n + #{$i}){
 				background-color: color.change(
-					list.nth($list-in-blocks-colors, $i), 
+					list.nth($replace-colors, $i), 
 					$lightness: 90%);
 			}
 		}
@@ -493,10 +489,7 @@ html { font-size: $mainFontSize; } // set the rem
     & + p {
         display: inline;
     }
-
-
 }
-
 
 //printing rules
 @media print{
