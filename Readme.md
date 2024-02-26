@@ -25,10 +25,24 @@ Here is an [exemple of a presentation I built with this theme](https://tristan.b
 
 ### Features
 
+#### Responsive
+
+This theme will automatically / responsively resize to the available area, whiel keeping its aspect ratio (by default 4/3 but you can change that through css variables)
+
 > [!WARNING]
 > Responsive resizing only works if elements are sized with relative 
 > units (`%`) or font units (`rem` and `em`). 
 >  Avoid using absolute units (`px`, `cm`, `in`...) and viewport units `vw`, `vh`
+
+#### Useful css classes
+
+
+- `.list-in-blocks` used on an `ul` or in a wrapping div around an `ul`, changes the list from standard style to colored boxes automatically placed (using flexbox).
+- `.centered-slide` on a section makes that section `display:flex` with
+    > [!IMPORTANT]
+    > For this class to work the option `display: ""` to be passed to reveal
+    > Otherwise reveal will arbitrarily set your slides to `display: block`
+
 
 ## Customizing
 
@@ -52,4 +66,4 @@ Afterwards, you can just build with
 $ make
 ```
 
-The resulting `css` file will be in `dist/`.
+The resulting `css` file will be in `dist/`. Just import it instead of your previous theme.
