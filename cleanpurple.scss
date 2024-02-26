@@ -4,6 +4,7 @@
  */
 
 @use 'sass:list';
+@use 'sass:color';
 
 // Default mixins and settings -----------------
 // sadly these need to be @import'ed and not @use'd
@@ -32,6 +33,8 @@ $low-color: hsl($hue, $sat, 80%) !default;
 $light-color: hsl($hue, $sat, 90%) !default;
 $scheme-main-bis: hsl($hue, $sat, 98%) !default;
 $scheme-main-background: hsl($hue, $sat , 96%) !default;
+$accent-colors:  #03ADD5,  #461fb3,  #E3BE00,  #F07D00  !default;
+
 
 // 1.2 SPECIFIC COLORS
 $font-color: #222 !default;
@@ -45,6 +48,11 @@ $footer-font-color: white !default;
 $title-underline-color: $mid-color !default;
 $overlay-element-bg-color: 0, 0, 0 !default;
 $overlay-element-fg-color: 240, 240, 240 !default;
+$list-in-blocks-colors: $accent-colors !default;
+$n-list-in-blocks-colors: length($list-in-blocks-colors);
+
+$replace-colors: $accent-colors !default;
+$n-replace-colors: length($replace-colors);
 
 
 // 2. SIZES
@@ -113,6 +121,8 @@ $overlayElementFgColor: $overlay-element-fg-color;
 
 html { font-size: $mainFontSize; } // set the rem
 
+@page {size: landscape;}
+
 .reveal {
 	@if $use-frame {
 		background-color: $margins-color;
@@ -128,10 +138,8 @@ html { font-size: $mainFontSize; } // set the rem
 	height: auto;
 	background-color: $background-color;
 
-	p {
-		margin:0; // overwrite the margin:20px that doesn't scale...
-	}
-
+	p {margin:0; } // overwrite the margin:20px that doesn't scale...
+/******************************** titles **********************************/
 	h1, h2{
 		&:after {
 			content: ' ';
@@ -148,12 +156,11 @@ html { font-size: $mainFontSize; } // set the rem
 			width: 80%;
 			margin: .2rem 1rem 1rem 0;
 		}
-
+		&.smaller-title{font-size: 0.9 * $h2-size;}
 	}
-	h3 {
-		margin-top: 1rem;
-	}
+	h3 {margin-top: 1rem; margin-bottom: 0;}
 
+	/****************************** FIGURES and TABLES ************************/
 	figure,.figure{
 		margin: 1rem 2rem;
 		text-align: center;
@@ -199,10 +206,6 @@ html { font-size: $mainFontSize; } // set the rem
 		}
 	}
 
-	ul {
-		display: block; // to allow figures to wrap around them
-	}
-
 	.figurewrap {
 		float: right;
 		margin: 1rem 2rem;
@@ -214,27 +217,71 @@ html { font-size: $mainFontSize; } // set the rem
 
 	table{
 		// border: 1px solid black;
-
-		thead {
-			background-color: $light-color;
-		}
-
-		tr,th,td{
-			border: none;
-		}
-
-		tbody tr:nth-child(odd) {
-		  background-color: $scheme-main-background;
-		}
-
-		tbody tr:nth-child(even) {
-		  background-color: $scheme-main-bis;
-		}
+		thead {background-color: $light-color;}
+		tr,th,td{border: none;}
+		tbody tr:nth-child(odd) {background-color: $scheme-main-background;}
+		tbody tr:nth-child(even) {background-color: $scheme-main-bis;}
 	}
+
+	/****************************** lists ************************/
+	ul {
+		display: block; // to allow figures to wrap around them
+
+		.list-in-blocks > &, &.list-in-blocks{
+			display: flex;
+			flex-direction: row;
+			flex-wrap:wrap;
+			justify-content: center;
+			gap: 1em;
+			list-style-type: none;
+
+			margin-right: 0; margin-left:0;
+
+			&>li{
+				max-width: 10em;
+
+				padding-top:.5rem;
+				padding-bottom: 1rem;
+				padding-left: .5rem;
+				padding-right: .5rem;
+				border-radius: 1em;
+				display: block;
+				text-align:center;
+
+				&>:not(:first-child){
+					font-size: 0.8em;
+				}
+
+				@for $i from 0 to $n-list-in-blocks-colors{
+					&:nth-child(#{$n-list-in-blocks-colors} n + #{$i}){
+						background-color: color.change(
+							list.nth($list-in-blocks-colors, $i + 1), 
+							$lightness: 90%);
+					}
+				}
+
+				&> ul{
+					margin-left:0;
+					list-style-type: none;
+					display:flex;
+					flex-direction:column;
+					justify-content: start;
+					align-items:center;
+					text-align: center;
+				}
+				
+			}
+
+	}
+
+	}
+
+	/********************************* FOOTNOTES **************************/
 
 	pre {
 		font-size: 1.2rem
 	}
+
 
 	.footnotes-end-of-section {
 		position: absolute;
@@ -261,6 +308,7 @@ html { font-size: $mainFontSize; } // set the rem
 		box-sizing: border-box;
 		height: 100%;
 		width: 100%;
+
 
 	}
 
@@ -299,6 +347,8 @@ html { font-size: $mainFontSize; } // set the rem
 		}
 	}
 
+/********************************* title-slide *************************/
+
 	#title-slide {
 		h1.title:after {
 			margin-top: .5rem;
@@ -312,8 +362,6 @@ html { font-size: $mainFontSize; } // set the rem
 			left: $slidepadding;
 		}
 	}
-
-
 
 	p.author{
 		margin-bottom: $authors-spacing;
@@ -376,6 +424,7 @@ html { font-size: $mainFontSize; } // set the rem
 		margin: 0;
 	}
 
+/************************************ footer *************************/
 	footer.slides-footer{
 		height: $footerheight;
 		position:absolute;
@@ -417,6 +466,61 @@ html { font-size: $mainFontSize; } // set the rem
 		
 	}
 
+
 }
+
+// for animations
+.replace{
+    display: inline-grid;
+    width: fit-content;
+    height:fit-content;
+    &.replace-block{ display:block grid; width:100%;}
+    &>*{
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    &:not(.nocolor){
+		@for $i from 1 through $n-replace-colors{
+			&>*:nth-child(#{$n-replace-colors} n + #{$i}){
+				background-color: color.change(
+					list.nth($list-in-blocks-colors, $i), 
+					$lightness: 90%);
+			}
+		}
+    }
+
+    & + p {
+        display: inline;
+    }
+
+
+}
+
+
+//printing rules
+@media print{
+html:not(.print-pdf) .reveal .slides{
+	section { position: relative !important; }
+	section.stack{
+		height:auto !important;
+		width: auto !important
+	}
+
+	section:not(.stack){
+		// page-break-before:always;
+		page-break-inside: avoid;
+		page-break-after: always;
+		// break-before:always;
+		break-inside: avoid;
+		break-after: always;
+		height: min(100vh, calc($aspect_height / $aspect_width * 100vw)) !important;
+		width: min(100vw, calc($aspect_width / $aspect_height * 100vh)) !important;
+}
+
+	section.centered-slide{
+		display:flex !important;
+	}
+}}
 
 // .institute 
