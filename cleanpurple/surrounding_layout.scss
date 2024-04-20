@@ -1,0 +1,112 @@
+@use 'sass:list';
+@use 'sass:color';
+
+@mixin viewport_settings($font_size_percent_width, $aspect-width, $aspect-height, $background-color, $use-frame, $margins-color){
+
+	$font_size_percent_height: calc($font_size_percent_width * $aspect-width / $aspect-height); 
+	$main-font-size: min($font_size_percent_width * 1vw, $font_size_percent_height * 1vh);
+
+	html { font-size: $main-font-size; } // set the rem
+	.reveal{
+		@if $use-frame {
+			background-color: $margins-color;
+		}
+		.slides{
+			text-align: left;
+			aspect-ratio: list.slash($aspect-width, $aspect-height);
+			max-width: 100%;
+			max-height: 100%;
+			width: auto;
+			height: auto;
+			background-color: $background-color;
+		}
+	}
+}
+
+/************************************ footer *************************/
+@mixin footer($footerheight, $footer-color, $footer-font-color, $footer-font-size){
+	footer.slides-footer{
+		height: $footerheight;
+		position:absolute;
+		bottom:0;
+		left:0;
+		right:0;
+
+		background-color: $footer-color;
+		color: $footer-font-color;
+
+		padding-right:1em;
+		padding-left:1em;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-content: center;
+
+		font-size: $footer-font-size;
+
+		white-space: nowrap;
+
+		* {
+			height: 100%;
+			margin: 0;
+		}
+
+		a { color: white; }
+
+		ul.footer-authors{
+			display: flex;
+			flex-direction: row;
+			list-style-type: none;
+
+			:is(li + li):before {
+				content: ", "
+			}
+		}
+
+		@media print{
+			position: relative;
+		}
+	}
+}
+
+
+@mixin print($aspect_height, $aspect_width){
+	@page {size: landscape;}
+	@media print{
+	html:not(.print-pdf) .reveal .slides{
+		section { position: relative !important; }
+		section.stack{
+			height:auto !important;
+			width: auto !important
+		}
+
+		section:not(.stack){
+			// page-break-before:always;
+			page-break-inside: avoid;
+			page-break-after: always;
+			// break-before:always;
+			break-inside: avoid;
+			break-after: always;
+			height: min(100vh, calc($aspect_height / $aspect_width * 100vw)) !important;
+			width: min(100vw, calc($aspect_width / $aspect_height * 100vh)) !important;
+	}
+		section:not(.centered-slide){
+			display:block !important;
+		}
+
+		section.centered-slide{
+			display:flex !important;
+		}
+	}}
+}
+
+@mixin ui_elements($ui-color){
+	.reveal {
+		.controls {color: $ui-color;}
+		.progress {
+			background: color.change($ui-color, $lightness: 90%);
+			color: $ui-color;
+		}
+	}
+}
+

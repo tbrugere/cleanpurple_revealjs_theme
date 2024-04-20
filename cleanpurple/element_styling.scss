@@ -1,0 +1,193 @@
+@use 'sass:list';
+@use 'sass:color';
+
+// Non-specific colors
+$dark-color: hsl($hue, $sat, 15%) !default;
+$mid-color: hsl($hue, $sat, 50%) !default;
+$low-color: hsl($hue, $sat, 80%) !default;
+$light-color: hsl($hue, $sat, 90%) !default;
+$scheme-main-bis: hsl($hue, $sat, 98%) !default;
+$scheme-main-background: hsl($hue, $sat , 96%) !default;
+$accent-colors:  #03ADD5,  #461fb3,  #E3BE00,  #F07D00  !default;
+
+@mixin titles($heading-sizes, $title-underline-color){
+	p {margin:0; } // overwrite the margin:20px that doesn't scale...
+	/******************************** titles **********************************/
+	$n-heading-sizes: length($heading-sizes);
+	$h2-size: list.nth($heading-sizes, 2);
+
+	@for $i from 1 through $n-heading-sizes {
+		h#{$i}{ font-size:  list.nth($heading-sizes, $i);}
+	}
+
+	h1, h2{
+		&:after {
+			content: ' ';
+			display: block;
+			border-bottom: 10px solid $title-underline-color;
+			width: 80%;
+			margin: .2rem 1rem 1rem 0;
+		}
+	}
+	h2 {
+		margin:0; // same: overwrite the margin:20px that doesn't scale...
+		&:after {
+			border-bottom: 5px solid $title-underline-color;
+			width: 80%;
+			margin: .2rem 1rem 1rem 0;
+		}
+		&.smaller-title{font-size: 0.9 * $h2-size;}
+	}
+	h3 {margin-top: 1rem; margin-bottom: 0;}
+}
+
+	/****************************** FIGURES and TABLES ************************/
+@mixin figures($subfigure-margin){
+	figure,.figure{
+		margin: 1rem 2rem;
+		text-align: center;
+		img {
+			margin-top: 0;
+			margin-left: auto;
+			margin-right: auto;
+			margin-bottom: .1rem
+		}
+
+		.superfigure{
+			margin: -$subfigure-margin; // fix inner margins not collapsing with outer ones
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			flex-wrap:nowrap;
+			// flex-basis: 1 1 0; // same width for all elements
+			width: attr(width); //pull width from the attribute
+			justify-content: space-around;
+			row-gap: 1em;
+			&.multiline{
+				flex-wrap:wrap;
+			}
+
+			&>:is(figure, .figure){
+				margin: $subfigure-margin;
+				// border: 1px solid gray;
+				width: auto;
+				flex-basis: min-content;
+				max-width: max-content;
+				flex-grow: 1;
+
+				figcaption {
+					font-size: .9rem; // make subfigure captions smaller
+				}
+			}
+
+			.break, hr{
+				flex-basis: 100%;
+				height: 0;
+				border: none;
+			}
+		}
+	}
+
+	.figurewrap {
+		float: right;
+		margin: 1rem 1rem;
+		figure {
+			margin: 0;
+		}
+	}
+}
+
+@mixin tables(){
+	table{
+		// border: 1px solid black;
+		thead {background-color: $light-color;}
+		tr,th,td{border: none;}
+		tbody tr:nth-child(odd) {background-color: $scheme-main-background;}
+		tbody tr:nth-child(even) {background-color: $scheme-main-bis;}
+	}
+}
+
+	/****************************** lists ************************/
+@mixin lists(){
+	ul, ol {
+		display: block; // to allow figures to wrap around them
+		flex-direction:column;
+		padding-left: 1em;
+	}
+
+	li{
+		margin-top: .5em;
+	}
+}
+
+@mixin list-in-blocks($list-in-blocks-colors){
+	$n-list-in-blocks-colors: list.length($list-in-blocks-colors);
+	.list-in-blocks > ul, ul.list-in-blocks{
+			display: flex;
+			flex-direction: row;
+			flex-wrap:wrap;
+			justify-content: center;
+			gap: 1em;
+			list-style-type: none;
+
+			margin-right: 0; margin-left:0;
+
+			&>li{
+				max-width: 10em;
+
+				padding-top:.5rem;
+				padding-bottom: 1rem;
+				padding-left: .5rem;
+				padding-right: .5rem;
+				border-radius: 1em;
+				display: block;
+				text-align:center;
+
+				&>:not(:first-child){
+					font-size: 0.8em;
+				}
+
+				@for $i from 0 to $n-list-in-blocks-colors{
+					&:nth-child(#{$n-list-in-blocks-colors} n + #{$i}){
+						background-color: color.change(
+							list.nth($list-in-blocks-colors, $i + 1), 
+							$lightness: 90%);
+					}
+				}
+
+				&> ul{
+					margin-left:0;
+					list-style-type: none;
+					display:flex;
+					flex-direction:column;
+					justify-content: start;
+					align-items:center;
+					text-align: center;
+				}
+				
+			}
+	}
+}
+
+@mixin footnotes($footerheight){
+	/********************************* FOOTNOTES **************************/
+	pre {
+		font-size: 1.2rem
+	}
+
+	.footnotes-end-of-section {
+		position: absolute;
+		bottom: $footerheight;
+		left:0;
+		right:0;
+		font-size: 0.5rem;
+		padding: 0em .5em .5em .5em;
+		ol>li>p {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+		ol>li>p+p{
+			margin-top: .1em
+		}
+	}
+}

@@ -8,15 +8,9 @@
 
 // Default mixins and settings -----------------
 // sadly these need to be @import'ed and not @use'd
-@import "template/mixins";
-@import "template/settings";
+@use "template/mixins";
+// @import "template/settings";
 // ---------------------------------------------
-
-
-// Include theme-specific fonts
-// 
-@import url(resources/fonts/source-sans-pro/source-sans-pro.css);
-
 
 // This theme settings (these are in snake case)
 // The reason I rename all of the config is so that they
@@ -24,7 +18,7 @@
 // (if I set them to !default without renaming them, they get overwritten by reveal source)
 
 // 1. COLORS 
-// 1.1 MAIN COLORS // stolen from my website - change if needed
+// 1.1 MAIN COLORS // stolen from my own website - change if needed
 $hue: 263 !default;
 $sat: 50% !default;
 $dark-color: hsl($hue, $sat, 15%) !default;
@@ -34,6 +28,7 @@ $light-color: hsl($hue, $sat, 90%) !default;
 $scheme-main-bis: hsl($hue, $sat, 98%) !default;
 $scheme-main-background: hsl($hue, $sat , 96%) !default;
 $accent-colors:  #03ADD5,  #461fb3,  #E3BE00,  #F07D00  !default;
+$ui-color: list.nth($accent-colors, 1) !default;
 
 
 // 1.2 SPECIFIC COLORS
@@ -52,8 +47,6 @@ $list-in-blocks-colors: $accent-colors !default;
 $n-list-in-blocks-colors: length($list-in-blocks-colors);
 
 $replace-colors: $accent-colors !default;
-$n-replace-colors: length($replace-colors);
-
 
 // 2. SIZES
 // 2.1 MAIN SIZES
@@ -62,14 +55,13 @@ $use-frame: true !default;
 $aspect-width: 4 !default;
 $aspect-height: 3 !default;
 $font_size_percent_width: 2.5 !default; 
-$font_size_percent_height: calc($font_size_percent_width * $aspect-width / $aspect-height); 
-$main-font-size: min($font_size_percent_width * 1vw, $font_size_percent_height * 1vh);
 
 // 2.2 FONT SIZES
 $h1-size: 2.0em !default;
 $h2-size: 1.6em !default;
 $h3-size: 1.3em !default;
 $h4-size: 1.0em !default;
+$heading-sizes: $h1-size, $h2-size, $h3-size, $h4-size;
 $footer-font-size: 0.6em !default;
 $authorsize: 1.3em !default;
 
@@ -85,435 +77,53 @@ $main-font: 'Georgia', "Lora", "Times new roman", serif !default;
 $heading-font: $main-font !default; 
 $code-font: monospace !default; 
 
+@use "cleanpurple/element_styling.scss" with (
+	$dark-color: $dark-color,
+	$mid-color: $mid-color,
+	$low-color: $low-color,
+	$light-color: $light-color,
+	$scheme-main-bis: $scheme-main-bis,
+	$scheme-main-background: $scheme-main-background,
+	$accent-colors: $accent-colors
+);
+@use "cleanpurple/slide_layout.scss";
+@use "cleanpurple/surrounding_layout.scss";
+@use "cleanpurple/animations.scss";
 
 
 // Change text colors against dark slide backgrounds
-@include dark-bg-text-color(#fff);
+@include mixins.dark-bg-text-color(#fff);
 
-
-// Override theme settings (see ../template/settings.scss)
-$mainColor: $font-color;
-$headingColor: $heading-color;
-$backgroundColor: $background-color;
-
-$mainFontSize: $main-font-size;
-$mainFont: $main-font;
-$headingFont: $heading-font;
-$headingTextShadow: none !default;
-$headingLetterSpacing: normal !default;
-$headingTextTransform: uppercase !default;
-$headingFontWeight: 600 !default;
-$linkColor: $link-color;
-$linkColorHover: lighten( $linkColor, 15% ) !default;
-$selectionBackgroundColor: lighten( $linkColor, 25% ) !default;
-
-$heading1Size: $h1-size;
-$heading2Size: $h2-size;
-$heading3Size: $h3-size;
-$heading4Size: $h4-size;
-
-$overlayElementBgColor: $overlay-element-bg-color; 
-$overlayElementFgColor: $overlay-element-fg-color;
+// Include theme-specific fonts
+// @import url(resources/fonts/source-sans-pro/source-sans-pro.css);
 
 // Theme template ------------------------------
-@import "template/theme";
+// @import "template/theme";
 // ---------------------------------------------
 
-html { font-size: $mainFontSize; } // set the rem
 
-@page {size: landscape;}
 
-.reveal {
-	@if $use-frame {
-		background-color: $margins-color;
-	}
-}
+@include surrounding_layout.viewport_settings($font_size_percent_width, $aspect-width, $aspect-height, $background-color, $use-frame, $margins-color);
 
 .reveal .slides {
-	text-align: left;
-	aspect-ratio: list.slash($aspect-width, $aspect-height);
-	max-width: 100%;
-	max-height: 100%;
-	width: auto;
-	height: auto;
-	background-color: $background-color;
+	/* element styling */
+	@include element_styling.titles($heading-sizes, $title-underline-color);
+	@include element_styling.figures($subfigure-margin);
+	@include element_styling.tables();
+	@include element_styling.lists();
+	@include element_styling.list-in-blocks($list-in-blocks-colors);
 
-	p {margin:0; } // overwrite the margin:20px that doesn't scale...
-/******************************** titles **********************************/
-	h1, h2{
-		&:after {
-			content: ' ';
-			display: block;
-			border-bottom: 10px solid $title-underline-color;
-			width: 80%;
-			margin: .2rem 1rem 1rem 0;
-		}
-	}
-	h2 {
-		margin:0; // same: overwrite the margin:20px that doesn't scale...
-		&:after {
-			border-bottom: 5px solid $title-underline-color;
-			width: 80%;
-			margin: .2rem 1rem 1rem 0;
-		}
-		&.smaller-title{font-size: 0.9 * $h2-size;}
-	}
-	h3 {margin-top: 1rem; margin-bottom: 0;}
+	/* slide layout */
+	@include slide_layout.section($slidepadding, $footerheight);
+	@include slide_layout.centered-slide();
+	@include slide_layout.title-slide($slidepadding, $authors-spacing, $authorsize, $headerheight, $title-underline-color);
 
-	/****************************** FIGURES and TABLES ************************/
-	figure,.figure{
-		margin: 1rem 2rem;
-		text-align: center;
-		img {
-			margin-top: 0;
-			margin-left: auto;
-			margin-right: auto;
-			margin-bottom: .1rem
-		}
+	/* surrounding layout */
+	@include surrounding_layout.footer($footerheight, $footer-color, $footer-font-color, $footer-font-size);
 
-		.superfigure{
-			margin: -$subfigure-margin; // fix inner margins not collapsing with outer ones
-			width: 100%;
-			display: flex;
-			flex-direction: row;
-			flex-wrap:nowrap;
-			// flex-basis: 1 1 0; // same width for all elements
-			width: attr(width); //pull width from the attribute
-			justify-content: space-around;
-			row-gap: 1em;
-			&.multiline{
-				flex-wrap:wrap;
-			}
-
-			&>:is(figure, .figure){
-				margin: $subfigure-margin;
-				// border: 1px solid gray;
-				width: auto;
-				flex-basis: min-content;
-				max-width: max-content;
-				flex-grow: 1;
-
-				figcaption {
-					font-size: .9rem; // make subfigure captions smaller
-				}
-			}
-
-			.break, hr{
-				flex-basis: 100%;
-				height: 0;
-				border: none;
-			}
-		}
-	}
-
-	.figurewrap {
-		float: right;
-		margin: 1rem 2rem;
-		figure {
-			margin: 0;
-		}
-	}
-
-
-	table{
-		// border: 1px solid black;
-		thead {background-color: $light-color;}
-		tr,th,td{border: none;}
-		tbody tr:nth-child(odd) {background-color: $scheme-main-background;}
-		tbody tr:nth-child(even) {background-color: $scheme-main-bis;}
-	}
-
-	/****************************** lists ************************/
-	ul {
-		display: block; // to allow figures to wrap around them
-
-
-	}
-
-	.list-in-blocks > ul, ul.list-in-blocks{
-			display: flex;
-			flex-direction: row;
-			flex-wrap:wrap;
-			justify-content: center;
-			gap: 1em;
-			list-style-type: none;
-
-			margin-right: 0; margin-left:0;
-
-			&>li{
-				max-width: 10em;
-
-				padding-top:.5rem;
-				padding-bottom: 1rem;
-				padding-left: .5rem;
-				padding-right: .5rem;
-				border-radius: 1em;
-				display: block;
-				text-align:center;
-
-				&>:not(:first-child){
-					font-size: 0.8em;
-				}
-
-				@for $i from 0 to $n-list-in-blocks-colors{
-					&:nth-child(#{$n-list-in-blocks-colors} n + #{$i}){
-						background-color: color.change(
-							list.nth($list-in-blocks-colors, $i + 1), 
-							$lightness: 90%);
-					}
-				}
-
-				&> ul{
-					margin-left:0;
-					list-style-type: none;
-					display:flex;
-					flex-direction:column;
-					justify-content: start;
-					align-items:center;
-					text-align: center;
-				}
-				
-			}
-	}
-
-	/********************************* FOOTNOTES **************************/
-	pre {
-		font-size: 1.2rem
-	}
-
-	.footnotes-end-of-section {
-		position: absolute;
-		bottom: $footerheight;
-		left:0;
-		right:0;
-		font-size: 0.5rem;
-		padding: 0em .5em .5em .5em;
-		ol>li>p {
-			margin-top: 0;
-			margin-bottom: 0;
-		}
-		ol>li>p+p{
-			margin-top: .1em
-		}
-	}
-
-	/********************************* GENERAL SECTIONS *****************/
-	section#title-slide, section>section{
-		display: block; // default. Should be set by reveal.css, but 
-		// weirdly, the default is none if non-activated, which messes up with transitions
-		padding: $slidepadding;
-		margin-bottom: $footerheight;
-		box-sizing: border-box;
-		height: 100%;
-		width: 100%;
-
-
-	}
-
-	// for this to work, you need to set display: "" in reveal config
-	section.centered-slide{
-		&.present {display:flex;}
-		flex-direction:column;
-		justify-content: center;
-
-		&>*:not(h2){
-			margin-top:auto;
-			margin-bottom:auto;
-		}
-
-		&>:is(ul,ol){
-			
-		}
-
-	}
-
-	section.big-slide{
-		&>:not(h2){
-			font-size: 1.5em;
-		}
-	}
-
-	section>section.title-slide {
-		display: flex;
-		flex-direction: column;
-		h1{
-			margin-top: auto;
-			margin-bottom: auto;
-			border-bottom-width: 40px;
-			font-size: $h1-size;
-			width: 100%
-		}
-	}
-
-	/********************************* title-slide *************************/
-
-	#title-slide {
-		h1.title:after {
-			margin-top: .5rem;
-			border-bottom: 20px solid $title-underline-color;
-		}
-
-		.date {
-			margin-top: auto;
-			position: absolute;
-			bottom: $slidepadding;
-			left: $slidepadding;
-		}
-	}
-
-	p.author{
-		margin-bottom: $authors-spacing;
-		font-size: $authorsize;
-	}
-
-	p.author + p.author {
-		margin-top: $authors-spacing;
-	}
-
-	.institute {
-		font-style: italic;
-	}
-
-	#slides-header{
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: 0;
-		padding-left: 1em;
-		padding-right: 1em;
-		padding-top: 0.5em;
-
-		height: $headerheight;
-		&>*{
-			height: 100%;
-			box-sizing: border-box;
-		}
-	}
-
-	#header_institute_logos{
-		display:flex;
-		justify-content: end;
-		// width:fit-content;
-		height: 100%;
-		list-style-type: none;
-		gap: 0.5em;
-	}
-
-	#title_institute_logos{
-		display:flex;
-		justify-content: start;
-		flex-wrap:wrap;
-
-		list-style-type: none;
-
-		height: 3em;
-		width: auto;
-		margin-top: 1.5em;
-		margin-right: 0;
-		margin-left: 0;
-
-		gap: 1em;
-
-			
-	}
-
-	:is(li,img).institute-logo{
-		height: 100%;
-		margin: 0;
-	}
-
-/************************************ footer *************************/
-	footer.slides-footer{
-		height: $footerheight;
-		position:absolute;
-		bottom:0;
-		left:0;
-		right:0;
-
-		background-color: $footer-color;
-		color: $footer-font-color;
-
-		padding-right:1em;
-		padding-left:1em;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-content: center;
-
-		font-size: $footer-font-size;
-
-		white-space: nowrap;
-
-		* {
-			height: 100%;
-			margin: 0;
-		}
-
-		a { color: white; }
-
-		ul.footer-authors{
-			display: flex;
-			flex-direction: row;
-			list-style-type: none;
-
-			:is(li + li):before {
-				content: ", "
-			}
-		}
-
-		
-	}
 }
 
-// for animations
-.replace{
-    display: inline-grid;
-    width: fit-content;
-    height:fit-content;
-    &.replace-block{ display:block grid; width:100%;}
-    &>*{
-        grid-column: 1;
-        grid-row: 1;
-    }
+@include animations.replace($replace-colors);
+@include surrounding_layout.ui_elements($ui-color);
 
-    &:not(.nocolor){
-		@for $i from 1 through $n-replace-colors{
-			&>*:nth-child(#{$n-replace-colors} n + #{$i}){
-				background-color: color.change(
-					list.nth($replace-colors, $i), 
-					$lightness: 90%);
-			}
-		}
-    }
-
-    & + p {
-        display: inline;
-    }
-}
-
-//printing rules
-@media print{
-html:not(.print-pdf) .reveal .slides{
-	section { position: relative !important; }
-	section.stack{
-		height:auto !important;
-		width: auto !important
-	}
-
-	section:not(.stack){
-		// page-break-before:always;
-		page-break-inside: avoid;
-		page-break-after: always;
-		// break-before:always;
-		break-inside: avoid;
-		break-after: always;
-		height: min(100vh, calc($aspect_height / $aspect_width * 100vw)) !important;
-		width: min(100vw, calc($aspect_width / $aspect_height * 100vh)) !important;
-}
-
-	section.centered-slide{
-		display:flex !important;
-	}
-}}
-
-// .institute 
+@include surrounding_layout.print($aspect_height, $aspect_width);

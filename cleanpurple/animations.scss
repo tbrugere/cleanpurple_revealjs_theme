@@ -1,0 +1,31 @@
+@use 'sass:color';
+@use 'sass:list';
+
+@mixin replace($replace-colors){
+	// for animations
+	$n-replace-colors: length($replace-colors);
+	.replace{
+		display: inline-grid;
+		width: fit-content;
+		height:fit-content;
+		&.replace-block{ display:block grid; width:100%;}
+		&>*{
+			grid-column: 1;
+			grid-row: 1;
+		}
+
+		&:not(.nocolor){
+			@for $i from 1 through $n-replace-colors{
+				&>*:nth-child(#{$n-replace-colors} n + #{$i}){
+					background-color: color.change(
+						list.nth($replace-colors, $i), 
+						$lightness: 90%);
+				}
+			}
+		}
+
+		& + p {
+			display: inline;
+		}
+	}
+}

@@ -1,0 +1,128 @@
+
+/********************************* GENERAL SECTIONS *****************/
+@mixin section($slidepadding, $footerheight){
+	section#title-slide, section>section{
+		display: block; // default. Should be set by reveal.css, but 
+		// weirdly, the default is none if non-activated, which messes up with transitions
+		padding: $slidepadding;
+		margin-bottom: $footerheight;
+		box-sizing: border-box;
+		height: 100%;
+		width: 100%;
+	}
+}
+
+@mixin centered-slide(){
+	// for this to work, you need to set display: "" in reveal config
+	section.centered-slide{
+		&.present {display:flex;}
+		flex-direction:column;
+		justify-content: center;
+
+		&>*:not(h2){
+			margin-top:auto;
+			margin-bottom:auto;
+		}
+
+		&>:is(ul,ol){
+			
+		}
+
+	}
+
+	section.big-slide{
+		&>:not(h2){
+			font-size: 1.5em;
+		}
+	}
+
+	section>section.title-slide {
+		display: flex;
+		flex-direction: column;
+		h1{
+			margin-top: auto;
+			margin-bottom: auto;
+			border-bottom-width: 40px;
+			width: 100%
+		}
+	}
+}
+
+/********************************* title-slide *************************/
+
+@mixin title-slide($slidepadding, $authors-spacing, $authorsize, $headerheight, $title-underline-color){
+	#title-slide {
+		h1.title:after {
+			margin-top: .5rem;
+			border-bottom: 20px solid $title-underline-color;
+		}
+
+		.date {
+			margin-top: auto;
+			position: absolute;
+			bottom: $slidepadding;
+			left: $slidepadding;
+		}
+	}
+
+	p.author{
+		margin-bottom: $authors-spacing;
+		font-size: $authorsize;
+	}
+
+	p.author + p.author {
+		margin-top: $authors-spacing;
+	}
+
+	.institute {
+		font-style: italic;
+	}
+
+	#slides-header{
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		padding-left: 1em;
+		padding-right: 1em;
+		padding-top: 0.5em;
+
+		height: $headerheight;
+		&>*{
+			height: 100%;
+			box-sizing: border-box;
+		}
+	}
+
+	#header_institute_logos{
+		display:flex;
+		justify-content: end;
+		// width:fit-content;
+		height: 100%;
+		list-style-type: none;
+		gap: 0.5em;
+	}
+
+	#title_institute_logos{
+		display:flex;
+		justify-content: start;
+		flex-wrap:wrap;
+
+		list-style-type: none;
+
+		height: 3em;
+		width: auto;
+		margin-top: 1.5em;
+		margin-right: 0;
+		margin-left: 0;
+
+		gap: 1em;
+
+			
+	}
+
+	:is(li,img).institute-logo{
+		height: 100%;
+		margin: 0;
+	}
+}
