@@ -9,6 +9,10 @@
 		box-sizing: border-box;
 		height: 100%;
 		width: 100%;
+
+		&.smaller-text{
+			font-size: .8em;
+		}
 	}
 }
 
@@ -97,6 +101,7 @@
 	#header_institute_logos{
 		display:flex;
 		justify-content: end;
+		flex-direction:row;
 		// width:fit-content;
 		height: 100%;
 		list-style-type: none;
@@ -124,5 +129,20 @@
 	:is(li,img).institute-logo{
 		height: 100%;
 		margin: 0;
+	}
+}
+
+
+@mixin columns(){
+	.columns {
+		display: flex;
+		flex-direction: row;
+		gap: 1em;
+	}
+	.column{
+		overflow-x: inherit;
+	}
+	.column>*{
+		margin: 0; // correct double margins because of flexbox
 	}
 }

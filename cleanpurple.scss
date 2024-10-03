@@ -89,6 +89,7 @@ $code-font: monospace !default;
 @use "cleanpurple/slide_layout.scss";
 @use "cleanpurple/surrounding_layout.scss";
 @use "cleanpurple/animations.scss";
+@use "cleanpurple/text.scss";
 
 
 // Change text colors against dark slide backgrounds
@@ -106,17 +107,24 @@ $code-font: monospace !default;
 @include surrounding_layout.viewport_settings($font_size_percent_width, $aspect-width, $aspect-height, $background-color, $use-frame, $margins-color);
 
 .reveal .slides {
+	/* text styling*/
+	@include text.text_settings();
+	@include text.highlights($accent-colors);
+
 	/* element styling */
 	@include element_styling.titles($heading-sizes, $title-underline-color);
 	@include element_styling.figures($subfigure-margin);
 	@include element_styling.tables();
 	@include element_styling.lists();
 	@include element_styling.list-in-blocks($list-in-blocks-colors);
+	@include element_styling.footnotes($footerheight);
+	@include element_styling.admonitions();
 
 	/* slide layout */
 	@include slide_layout.section($slidepadding, $footerheight);
 	@include slide_layout.centered-slide();
 	@include slide_layout.title-slide($slidepadding, $authors-spacing, $authorsize, $headerheight, $title-underline-color);
+	@include slide_layout.columns();
 
 	/* surrounding layout */
 	@include surrounding_layout.footer($footerheight, $footer-color, $footer-font-color, $footer-font-size);

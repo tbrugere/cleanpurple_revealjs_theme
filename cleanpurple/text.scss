@@ -1,0 +1,23 @@
+@use 'sass:list';
+@use 'sass:color';
+
+@mixin text_settings(){
+	strong {font-weight: bolder;}
+}
+
+@mixin highlights($accent-colors, $default-color:1, $min-lightness:80%){
+	mark, .highlight{
+		background-color: list.nth($accent-colors, $default-color);
+
+		@for $i from 1 through list.length($accent-colors) {
+			&[color="#{$i}"]{
+				$bg-color: list.nth($accent-colors, $i);
+				$lightness: color.lightness($bg-color);
+				@if $lightness < $min-lightness {
+					$bg-color: color.change($bg-color, $lightness:$min-lightness);
+				}
+			background-color: $bg-color;
+			}
+		}
+	}
+}
